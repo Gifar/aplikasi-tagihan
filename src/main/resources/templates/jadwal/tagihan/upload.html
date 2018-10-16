@@ -18,7 +18,43 @@
                         <h3 class="h4">Upload Jadwal Tagihan</h3>
                     </div>
                     <div class="card-body">
+                        <p>
+                            <a th:href="@{/jadwal/tagihan/contoh/jadwal}" class="btn btn-xs btn-primary">Contoh File Jadwal Tagihan</a>
+                        </p>
+                        <form class="form-horizontal" method="post" th:action="@{/jadwal/tagihan/upload}" enctype="multipart/form-data">
+                            <div>
+                                <label class="col-sm-3 form-control-label">Konfig</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="konfigurasiJadwalTagihan">
+                                        <option>Pilih Salah Satu</option>
+                                        <option th:each="data : ${listKonfig}"
+                                                th:text="${data.nama}" th:value="${data.id}">Asrama</option>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div>
+                                <label class="col-sm-3 form-control-label">File</label>
+                                <div class="col-sm-9">
+                                    <input type="file" name="fileJadwal" th:class="form-control">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="col-sm-3 form-control-label">Pakai Header</label>
+                                <div class="col-sm-1">
+                                    <input id="pakaiHeader" type="checkbox"
+                                           name="pakaiHeader" checked value="true"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <input type="submit" value="Simpan" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
