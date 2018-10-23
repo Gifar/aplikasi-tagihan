@@ -2,15 +2,20 @@ package id.ac.tazkia.payment.virtualaccount.controller;
 
 import id.ac.tazkia.payment.virtualaccount.dao.*;
 import id.ac.tazkia.payment.virtualaccount.dto.UploadError;
-import id.ac.tazkia.payment.virtualaccount.entity.*;
+import id.ac.tazkia.payment.virtualaccount.entity.Debitur;
+import id.ac.tazkia.payment.virtualaccount.entity.JadwalTagihan;
+import id.ac.tazkia.payment.virtualaccount.entity.KonfigurasiJadwalTagihan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +28,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/jadwal/tagihan")
@@ -169,5 +168,10 @@ public class TagihanTerjadwalController {
         response.setHeader("Content-Disposition", "attachment; filename=contoh-jadwal.csv");
         FileCopyUtils.copy(contohFileJadwal.getInputStream(), response.getOutputStream());
         response.getOutputStream().flush();
+    }
+
+    @GetMapping("/konfigurasi/list")
+    public ModelMap listKonfigurasi(@PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ModelMap().addAttribute("konfigurasiTagihan",konfigurasiJadwalTagihanDao.findAll(pageable));
     }
 }

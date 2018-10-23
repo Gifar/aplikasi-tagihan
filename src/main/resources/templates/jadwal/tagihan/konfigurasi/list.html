@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-if="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Tagihan Terjadwal</title>
+</head>
+<body>
+<section layout:fragment="content" class="tables">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Daftar Konfigurasi</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <a th:href="@{/jadwal/tagihan/konfigurasi/form}" class="btn btn-primary">Input Konfigurasi Baru</a>
+                        </p>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Tagihan</th>
+                                <th>Tanggal Penagihan</th>
+                                <th>jumlah Penagihan</th>
+                                <th>Tanggal Mulai</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="data,row : ${konfigurasiTagihan}">
+                                <th th:text="${row.count}">1</th>
+                                <td th:text="${data.nama}">Pendaftaran</td>
+                                <td th:text="${data.jenisTagihan.nama}">pmb2017</td>
+                                <td th:text="${data.tanggalPenagihan}">11</td>
+                                <td th:text="${data.jumlahPenagihan}">2018-10-25</td>
+                                <td th:text="${data.tanggalMulai}">5</td>
+                                <td>
+                                    <a class="btn btn-xs">edit</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!--Start Pagination -->
+                        <div th:if="${konfigurasiTagihan.numberOfElements}" class="card-footer">
+                            <center>
+                                <div class="dataTables_paginate paging_simple_numbers" id="datatable1_paginate">
+                                    <ul class="pagination" sd:pagination="full">
+                                        <li class="paginate_button page-item previous disabled" id="datatable1_previous">
+                                            <a href="#" aria-controls="datatable1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        </li>
+                                        <li class="paginate_button page-item active">
+                                            <a href="#" aria-controls="datatable1" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                                        </li>
+                                        <li class="paginate_button page-item next" id="datatable1_next">
+                                            <a href="#" aria-controls="datatable1" data-dt-idx="8" tabindex="0" class="page-link">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </center>
+                        </div>
+                        <!-- End Pagination -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
