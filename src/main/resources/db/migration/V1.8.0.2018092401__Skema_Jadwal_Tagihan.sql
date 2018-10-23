@@ -1,5 +1,6 @@
 create table konfigurasi_jadwal_tagihan (
   id                  varchar(36),
+  nama                varchar(255) not null,
   id_jenis_tagihan    varchar(36) not null,
   id_kode_biaya       varchar(36) not null,
   tanggal_penagihan   int         not null,
