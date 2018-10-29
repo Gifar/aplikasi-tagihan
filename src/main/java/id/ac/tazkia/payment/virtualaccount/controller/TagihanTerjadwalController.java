@@ -4,6 +4,7 @@ import id.ac.tazkia.payment.virtualaccount.dao.*;
 import id.ac.tazkia.payment.virtualaccount.dto.UploadError;
 import id.ac.tazkia.payment.virtualaccount.entity.Debitur;
 import id.ac.tazkia.payment.virtualaccount.entity.JadwalTagihan;
+import id.ac.tazkia.payment.virtualaccount.entity.JenisTagihan;
 import id.ac.tazkia.payment.virtualaccount.entity.KonfigurasiJadwalTagihan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,8 @@ public class TagihanTerjadwalController {
     private JadwalTagihanDao jadwalTagihanDao;
     @Autowired
     private KonfigurasiJadwalTagihanDao konfigurasiJadwalTagihanDao;
+    @Autowired
+    private TagihanTerjadwalDao tagihanTerjadwalDao;
 
     @ModelAttribute("listKonfig")
     public Iterable<KonfigurasiJadwalTagihan> daftarKonfig() {
@@ -76,7 +79,7 @@ public class TagihanTerjadwalController {
 
         konfigurasiJadwalTagihanDao.save(konfigurasiJadwalTagihan);
 
-        return "redirect:/jadwal/tagihan/list";
+        return "redirect:/jadwal/tagihan/konfigurasi/list";
     }
 
 
@@ -153,7 +156,20 @@ public class TagihanTerjadwalController {
 
 
     @GetMapping("/list")
-    public void daftarJadwalTagihan(){
+    public void daftarJadwalTagihan(@RequestParam(value = "search", required = false)
+                                                JenisTagihan jenisTagihan,
+                                    @PageableDefault(size = 10, direction = Sort.Direction.DESC)
+                                            Pageable pageable, Model model){
+
+        model.addAttribute("jenisTagihan",jenisTagihanDao.findByAktifOrderByKode(Boolean.TRUE));
+
+        if (jenisTagihan != null) {
+            model.addAttribute("search", jenisTagihan);
+            model.addAttribute("tagihanTerjadwal", tagihanTerjadwalDao.findByTagihanJenisTagihan(jenisTagihan,pageable));
+        } else {
+            model.addAttribute("tagihanTerjadwal",tagihanTerjadwalDao.findAll(pageable));
+
+        }
 
     }
 
@@ -171,7 +187,8 @@ public class TagihanTerjadwalController {
     }
 
     @GetMapping("/konfigurasi/list")
-    public ModelMap listKonfigurasi(@PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ModelMap listKonfigurasi(@PageableDefault(size = 1, direction = Sort.Direction.DESC) Pageable pageable) {
         return new ModelMap().addAttribute("konfigurasiTagihan",konfigurasiJadwalTagihanDao.findAll(pageable));
     }
+
 }
